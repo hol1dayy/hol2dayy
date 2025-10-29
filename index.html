@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>водичка родненькая</title>
+<style>
+  body {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(to bottom, #b8e2fa, #c9ebff);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #000;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .day-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .day-buttons button {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 1rem;
+    color: white;
+    background-color: #0057fe;
+    transition: background 0.3s;
+  }
+
+  .day-buttons button:hover {
+    background-color: #0040c8;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+  }
+
+  .bottles-section {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 25px;
+  }
+
+  .bottle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* старый стиль бутылок */
+  .bottle {
+    position: relative;
+    width: 90px;
+    height: 230px;
+    border: 3px solid #5b8eff;
+    border-radius: 18px;
+    background: linear-gradient(to top, #dfefff, #ffffff);
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .water {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to top, #4e9fff, #8fd3ff);
+    transition: height 0.4s;
+    height: 0%;
+  }
+
+  .bottle-label {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  .plus-btn {
+    background: #0057fe;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background 0.3s, transform 0.1s;
+    box-shadow: 0 4px 8px rgba(0,87,254,0.25);
+  }
+
+  .plus-btn:hover {
+    background: #0040c8;
+  }
+
+  .plus-btn:active {
+    transform: scale(0.95);
+  }
+
+  .code-display {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    min-height: 1.5em;
+    margin-top: 8px;
+  }
+
+  .code-section {
+    background: #ffffffcc;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 95%;
+    max-width: 400px;
+  }
+
+  .code-section input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #5b8eff;
+    font-size: 1rem;
+    width: 75%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .button-row button {
+    cursor: pointer;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 18px;
+    background-color: #0057fe;
+    transition: background 0.3s;
+  }
+
+  .button-row button:hover {
+    background-color: #0040c8;
+  }
+
+  .description {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #333;
+    opacity: 0.8;
+  }
+
+  .success {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>💧Отметь три выпитых бутылки (0.5 литра каждая), чтобы получить код</h1>
+
+<div class="day-buttons">
+  <button data-day="1">1 день</button>
+  <button data-day="2">2 день</button>
+  <button data-day="3">3 день</button>
+</div>
+<div class="note">Сначала выбери день, потом заполняй воду</div>
+
+<div class="bottles-section">
+  <div class="bottle-wrapper">
+    <div class="bottle" data-index="0"><div class="water"></div></div>
+    <div class="bottle-label">0.5 л</div>
+    <button class="plus-btn" data-bottle="0">+</button>
+    <div class="code-display" id="code1"></div>
+  </div>
+  <div class="bottle-wrapper">
+    <div class="bottle" data-index="1"><div class="water"></div></div>
+    <div class="bottle-label">0.5 л</div>
+    <button class="plus-btn" data-bottle="1">+</button>
+    <div class="code-display" id="code2"></div>
+  </div>
+  <div class="bottle-wrapper">
+    <div class="bottle" data-index="2"><div class="water"></div></div>
+    <div class="bottle-label">0.5 л</div>
+    <button class="plus-btn" data-bottle="2">+</button>
+    <div class="code-display" id="code3"></div>
+  </div>
+</div>
+
+<div class="code-section">
+  <h2>Введи код, чтобы открыть ссылку 🔐</h2>
+  <input type="text" id="codeInput" placeholder="Введи код">
+  <div class="button-row">
+    <button id="resetBtn">Сбросить</button>
+    <button id="openBtn">Открыть ссылку</button>
+  </div>
+  <div class="description">сбросить - очищение всех полей и всего объема воды</div>
+  <div class="success" id="message"></div>
+</div>
+
+<script>
+  const links = {
+    "1": { code: "547854", url: "https://drive.google.com/file/d/1FGH2qvOgKlmnFey16uVwBoBllk3c3bvd/view?usp=drive_link" },
+    "2": { code: "749278", url: "https://drive.google.com/file/d/19gymfwRZMs8d1zr9EcxAVou-DmTecm9i/view?usp=drive_link" },
+    "3": { code: "483976", url: "https://drive.google.com/file/d/1UHJez9diDiBOrW7WfJMJO5QH2Q543USr/view?usp=drive_link" }
+  };
+
+  let currentDay = null;
+  let currentCode = "";
+  const bottleLevels = [0, 0, 0];
+  const waterElems = document.querySelectorAll(".water");
+  const codeDisplays = [document.getElementById("code1"), document.getElementById("code2"), document.getElementById("code3")];
+  const message = document.getElementById("message");
+
+  document.querySelectorAll(".day-buttons button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentDay = btn.dataset.day;
+      currentCode = links[currentDay].code;
+      resetAll();
+      message.textContent = "Выбран " + currentDay + " день";
+      message.style.color = "black";
+    });
+  });
+
+  document.querySelectorAll(".plus-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (!currentDay) {
+        message.textContent = "Сначала выбери день!";
+        message.style.color = "red";
+        return;
+      }
+      const index = btn.dataset.bottle;
+      bottleLevels[index] = Math.min(bottleLevels[index] + 50, 500);
+      const heightPercent = (bottleLevels[index] / 500) * 100;
+      waterElems[index].style.height = heightPercent + "%";
+
+      const codePair = currentCode.slice(index * 2, index * 2 + 2);
+      if (bottleLevels[index] >= 250 && bottleLevels[index] < 500) {
+        codeDisplays[index].textContent = codePair[0];
+      } else if (bottleLevels[index] >= 500) {
+        codeDisplays[index].textContent = codePair;
+      }
+    });
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", resetAll);
+
+  function resetAll() {
+    bottleLevels.fill(0);
+    waterElems.forEach(w => w.style.height = "0%");
+    codeDisplays.forEach(c => c.textContent = "");
+    document.getElementById("codeInput").value = "";
+    message.textContent = "";
+  }
+
+  document.getElementById("openBtn").addEventListener("click", () => {
+    const input = document.getElementById("codeInput").value.trim();
+    let found = null;
+    for (let key in links) {
+      if (links[key].code === input) {
+        found = links[key].url;
+      }
+    }
+    if (found) {
+      message.style.color = "green";
+      message.textContent = "✅ Код верный! Открываю ссылку...";
+      setTimeout(() => window.open(found, "_blank"), 800);
+    } else {
+      message.style.color = "red";
+      message.textContent = "❌ Неверный код";
+    }
+  });
+</script>
+
+</body>
+</html>
